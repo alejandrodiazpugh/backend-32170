@@ -1,26 +1,15 @@
-interface usuario {
-	nombre: string;
-	apellido: string;
-	libros: libro[];
-	mascotas: string[];
-}
 
-interface libro {
-	titulo: string;
-	autor: string;
-}
-
-class Usuario implements usuario {
-	nombre: string;
-	apellido: string;
-	libros: libro[];
-	mascotas: string[];
+class Usuario  {
+	nombre;
+	apellido;
+	libros;
+	mascotasM
 
 	constructor(
-		nombre: string,
-		apellido: string,
-		libros: libro[],
-		mascotas: string[]
+		nombre,
+		apellido,
+		libros,
+		mascotas
 	) {
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -28,25 +17,25 @@ class Usuario implements usuario {
 		this.mascotas = mascotas;
 	}
 
-	getFullName(): string {
+	getFullName() {
 		return `${this.nombre} ${this.apellido}`;
 	}
 
-	addMascota(mascota: string): void {
+	addMascota(mascota) {
 		this.mascotas.push(mascota);
 	}
 
-	countMascotas(): number {
+	countMascotas() {
 		return this.mascotas.length;
 	}
 
-	addBook(titulo: string, autor: string): void {
+	addBook(titulo, autor) {
 		this.libros.push({ titulo, autor });
 	}
 
-	getBookNames(): string[] {
-		const bookNameArr: string[] = [];
-		this.libros.forEach((libro: libro) => {
+	getBookNames() {
+		const bookNameArr = [];
+		this.libros.forEach((libro) => {
 			bookNameArr.push(libro.titulo);
 		});
 		return bookNameArr;
