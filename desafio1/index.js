@@ -3,7 +3,7 @@ class Usuario  {
 	nombre;
 	apellido;
 	libros;
-	mascotasM
+	mascotas;
 
 	constructor(
 		nombre,
