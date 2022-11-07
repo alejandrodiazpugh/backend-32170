@@ -45,3 +45,21 @@ Tardé dos días en este desafío, no por el código en sí, sino porque nodemon
 **Ejecución**
 
 Siguiendo lo que se vio en el curso no es tan complicado entender como levantar el servidor. No termino de entender cómo se levanta el servidor si nunca llamo la variable "server".
+
+
+## Desafio 4 - API RESTful
+
+**Consigna**
+
+-   Realizar un proyecto de servidor basado en node.js y express que ofrezca una API RESTful de productos.
+    -   GET '/api/productos' -> devuelve todos los productos.
+    -   GET '/api/productos/:id' -> devuelve un producto según su id.
+    -   POST '/api/productos' -> recibe y agrega un producto, y lo devuelve con su id asignado.
+    -   PUT '/api/productos/:id' -> recibe y actualiza un producto según su id.
+    -   DELETE '/api/productos/:id' -> elimina un producto según su id.
+
+
+**Ejecución**
+
+En este desafío el reto fue intentar separar las capas de lo que se hace en la ruta y lo que se hace en el contenedor de productos. Tuve problemas para que los mensajes de error se mostraran (por ejemplo, si tengo 5 productos y hago un PUT request para modificar el 9o elemento), pero eventualmente pude hacerlo.
+En mi rama local tengo una versión con TS, para poder dar seguridad al POST y PUT request, pero al final preferí simplificarme la vida y dejarlo en JS.
