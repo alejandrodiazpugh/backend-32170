@@ -20,7 +20,7 @@ class Contenedor {
 			const productToGet = products.find(
 				(product) => product.id === queryId
 			);
-			if (productToGet === 'undefined') {
+			if (productToGet === undefined) {
 				return { error: 'Producto no encontrado' };
 			}
 			return productToGet;
@@ -44,9 +44,19 @@ class Contenedor {
 	async update(queryId, queryProduct) {
 		try {
 			const products = await this.getAll();
-			const productToChange = await this.getById(queryId);
+			const productToChange = products.find(
+				// Intente hacer que funcionara llamando this.getById, pero no servia
+				(product) => product.id === queryId
+			);
+			if (productToChange === undefined) {
+				return { error: 'Producto no encontrado' };
+			}
 			const updatedProduct = { ...queryProduct, id: queryId };
-			products.splice(products.indexOf(productToChange), updatedProduct);
+			products.splice(
+				products.indexOf(productToChange),
+				1,
+				updatedProduct
+			);
 			fs.promises.writeFile(this.path, JSON.stringify(products));
 			return updatedProduct;
 		} catch (error) {
@@ -57,10 +67,11 @@ class Contenedor {
 	async deleteById(queryId) {
 		try {
 			const products = await this.getAll();
-			const indexToDelete = products.indexOf(await this.getById(queryId));
-			products.splice(indexToDelete, 1);
+			if (products.length < queryId) {
+				return { error: 'Producto no encontrado' };
+			}
+			products.splice(queryId - 1, 1);
 			fs.promises.writeFile(this.path, JSON.stringify(products));
-			return true;
 		} catch (error) {
 			console.log('Error al borrar producto: ' + error);
 		}

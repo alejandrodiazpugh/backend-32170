@@ -6,7 +6,7 @@ const { Contenedor } = require('../utils/Contenedor.js');
 
 // ---------- ROUTER ----------
 const routerProducts = express.Router();
-const productsApi = new Contenedor('./desafio4/src/data/products.json');
+const productsApi = new Contenedor('./src/data/products.json'); // La ruta cambia dependiendo de donde hago la llamada a nodemon ...
 
 //---------- GET PRODUCTS ------------
 routerProducts.get('/', async (req, res) => {
@@ -33,7 +33,7 @@ routerProducts.post('/', (req, res) => {
 routerProducts.put('/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
 	const updated = await productsApi.update(id, req.body);
-	if (updated.id === 'undefined') {
+	if (updated.id === undefined) {
 		return res.status(400).send({
 			code: 400,
 			msg: `Mala petición. No existe producto con id ${id}`,
@@ -48,7 +48,13 @@ routerProducts.put('/:id', async (req, res) => {
 //---------- DELETE PRODUCT ------------
 routerProducts.delete('/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
-	await productsApi.deleteById(id);
+	const deleted = await productsApi.deleteById(id);
+	if (deleted?.error) {
+		return res.status(400).send({
+			code: 400,
+			msg: `Mala petición. No existe producto con id ${id}`,
+		});
+	}
 	res.status(200).send({
 		code: 200,
 		msg: `Se ha eliminado con éxito el producto con id ${id}.`,

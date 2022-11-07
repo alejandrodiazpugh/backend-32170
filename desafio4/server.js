@@ -11,11 +11,6 @@ const routerProducts = require('./src/routes/products.routes');
 const app = express();
 
 const PORT = 8080;
-const randomBetween = (num) => {
-	return Math.floor(Math.random() * num) + 1;
-};
-
-console.log(typeof randomBetween);
 
 // --------------------------- MIDDLEWARE ----------------------
 app.use(express.json());
