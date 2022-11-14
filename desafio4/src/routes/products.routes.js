@@ -41,7 +41,7 @@ routerProducts.put('/:id', async (req, res) => {
 	}
 	return res.status(200).send({
 		code: 200,
-		msg: `Se ha modificado el contenido del producto ${req.body.titulo} con id ${id}`,
+		msg: `Se ha modificado el contenido del producto con id ${id}`,
 	});
 });
 
