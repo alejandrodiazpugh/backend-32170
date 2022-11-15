@@ -3,7 +3,6 @@
 // --------------------------- IMPORTS ---------------------------
 
 const express = require('express');
-const handleBars = require('express-handlebars');
 const path = require('path');
 const morgan = require('morgan');
 const routerForm = require('./src/routes/form.routes');
@@ -20,18 +19,8 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // --------------------------- MOTOR DE PLANTILLAS ---------------------------
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
-
-app.engine(
-	'hbs',
-	handleBars.engine({
-		defaultLayout: 'main',
-		layoutsDir: path.join(app.get('views'), 'layouts'),
-		partialsDir: path.join(app.get('views'), 'partials'),
-		extname: 'hbs',
-	})
-);
 
 // --------------------------- RUTAS ---------------------------
 
