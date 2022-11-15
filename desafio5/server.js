@@ -4,6 +4,7 @@
 
 const express = require('express');
 const path = require('path');
+const pug = require('pug');
 const morgan = require('morgan');
 const routerForm = require('./src/routes/form.routes');
 
@@ -19,7 +20,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // --------------------------- MOTOR DE PLANTILLAS ---------------------------
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'src/views'));
 
 // --------------------------- RUTAS ---------------------------

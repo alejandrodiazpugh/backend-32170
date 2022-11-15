@@ -95,3 +95,7 @@ button:active {
 .table-row {
 	text-align: center;
 }
+
+.table-img {
+	width: 2rem;
+}
