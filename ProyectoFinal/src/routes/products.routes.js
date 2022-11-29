@@ -1,7 +1,18 @@
 // ----------- IMPORTS ----------
-import express from 'express'
-import fs from 'fs'
-import Contenedor  from '../utils/Contenedor';
+import express from 'express';
+import Contenedor from '../utils/Contenedor.js';
+import { adminVerification } from '../utils/Verification.js';
+
+// ---------- ADMIN AUTH ----------
+const isAdmin = adminVerification.isAdmin;
+const adminAuth = (req, res, next) => {
+	!isAdmin
+		? res.status(403).json({
+				code: 403,
+				msg: `Forbidden ${req.method} ${req.baseUrl}${req.url}`,
+		  })
+		: next();
+};
 
 // ---------- ROUTER ----------
 const routerProducts = express.Router();
@@ -19,7 +30,7 @@ routerProducts.get('/:id', async (req, res) => {
 
 //---------- POST PRODUCT ------------
 
-routerProducts.post('/', (req, res) => {
+routerProducts.post('/', adminAuth, (req, res) => {
 	productsApi.save(req.body);
 	return res.status(201).send({
 		code: 201,
@@ -29,7 +40,7 @@ routerProducts.post('/', (req, res) => {
 
 //---------- PUT PRODUCT ------------
 
-routerProducts.put('/:id', async (req, res) => {
+routerProducts.put('/:id', adminAuth, async (req, res) => {
 	const id = parseInt(req.params.id);
 	const updated = await productsApi.update(id, req.body);
 	if (updated.id === undefined) {
@@ -45,7 +56,7 @@ routerProducts.put('/:id', async (req, res) => {
 });
 
 //---------- DELETE PRODUCT ------------
-routerProducts.delete('/:id', async (req, res) => {
+routerProducts.delete('/:id', adminAuth, async (req, res) => {
 	const id = parseInt(req.params.id);
 	const deleted = await productsApi.deleteById(id);
 	if (deleted?.error) {
@@ -60,4 +71,4 @@ routerProducts.delete('/:id', async (req, res) => {
 	});
 });
 
-export default routerProducts()
+export default routerProducts;
