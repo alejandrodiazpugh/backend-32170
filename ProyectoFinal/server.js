@@ -4,6 +4,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import viewsRouter from './src/routes/view.routes.js';
 import productRouter from './src/routes/products.routes.js';
 import cartRouter from './src/routes/cart.routes.js';
 
@@ -25,9 +26,7 @@ app.set('views', path.join(__dirname, 'src/views'));
 
 // --------------------------- RUTAS ---------------------------
 
-app.get('/', (req, res) => {
-	res.render('index');
-});
+app.get('/', viewsRouter);
 app.use('/api/productos', productRouter);
 app.use('/api/carrito', cartRouter);
 
