@@ -6,6 +6,7 @@ section(class='grid grid-cols-auto m-8')
             div(class='spacing')
             div(class='flex-container')
                 p(class='card--price')='$'+ product.precio
-                button(class='card--btn' id=product.id + '-btn')='Agregar'
+                form(action="", method="") 
+                    button(type='submit' class='card--btn' id=product.id + '-btn')='Agregar'
 
 

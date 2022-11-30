@@ -27,7 +27,7 @@ routerCart.delete('/:id', async (req, res) => {
 			msg: `Mala petición. No existe carrito con id ${id}`,
 		});
 	}
-	res.status(200).send({
+	return res.status(200).send({
 		code: 200,
 		msg: `Se ha eliminado con éxito el carrito con id ${id}.`,
 	});
