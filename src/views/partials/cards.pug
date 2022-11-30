@@ -1,0 +1,11 @@
+section(class='grid grid-cols-auto m-8')
+    each product in products
+        article(class='card p-8 filter')
+            img(src=product.url, alt="", srcset="" class='card--img')
+            h2(class='card--title')=product.titulo
+            div(class='spacing')
+            div(class='flex-container')
+                p(class='card--price')='$'+ product.precio
+                button(class='card--btn' id=product.id + '-btn')='Agregar'
+
+

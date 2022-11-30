@@ -1,20 +1,20 @@
 {
-  "name": "backend-32170",
+  "name": "proyectofinal",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2",
-    "express-handlebars": "^6.0.6",
-    "socket.io": "^4.5.3"
-  },
   "devDependencies": {
+    "express": "^4.18.2",
     "morgan": "^1.10.0"
+  },
+  "dependencies": {
+    "pug": "^3.0.2"
   }
 }
