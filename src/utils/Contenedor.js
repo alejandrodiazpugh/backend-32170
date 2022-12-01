@@ -30,7 +30,7 @@ export default class Contenedor {
 	async getById(queryId) {
 		try {
 			const items = await this.getAll();
-			const itemToGet = items.find((Item) => Item.id === queryId);
+			const itemToGet = await items.find((item) => item.id === queryId);
 			if (itemToGet === undefined) {
 				return { error: 'elemento no encontrado' };
 			}
@@ -68,7 +68,6 @@ export default class Contenedor {
 			}
 			const timestamp = Contenedor.timestamp();
 			const code = Contenedor.generateCode(queryId);
-			console.log(code);
 			const updatedItem = {
 				...queryItem,
 				codigo: code,

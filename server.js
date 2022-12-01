@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'src/views'));
 
 // --------------------------- RUTAS ---------------------------
 
-app.get('/', viewsRouter);
+app.use('/', viewsRouter);
 app.use('/api/productos', productRouter);
 app.use('/api/carrito', cartRouter);
 

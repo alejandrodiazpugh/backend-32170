@@ -11,28 +11,60 @@ const swalBehavior = {
 	iconColor: '#1f5372',
 };
 
+const swalDelete = {
+	titleText: 'Eliminado',
+	icon: 'success',
+	toast: true,
+	background: '#f0fcfe',
+	position: 'top-start',
+	timer: '1500',
+	confirmButtonColor: '#0c3756',
+	color: '#0c3756',
+	iconColor: '#1f5372',
+}
+
 let addToCartBtns = document.querySelectorAll('.card--btn');
 addToCartBtns.forEach((btn) => {
-	btn.addEventListener('click', (e) => {
+	btn.addEventListener('click', async (e) => {
 		e.preventDefault();
 		const id = parseInt(e.target.id[0]);
-		// const product = getProduct(`http://localhost:8080/api/productos/${id}`);
-		postProduct(id);
-		console.log(id);
+		await postProduct(id);
 		Swal.fire(swalBehavior);
 	});
 });
 
-const getProduct = async (apiUrl) => {
-	let res = await fetch(apiUrl);
-	let data = await res.json();
-	return data;
-};
+let deleteFromCartBtns = document.querySelectorAll('.delete-from-cart-btn');
+deleteFromCartBtns.forEach((btn) => {
+	btn.addEventListener('click', async (e) => {
+		e.preventDefault();
+		const id = parseInt(e.target.id[0]);
+		await deleteProduct(id);
+		const rowToDelete = btn.parentElement;
+		rowToDelete.remove()
+		Swal.fire(swalDelete)
+	})
+})
 
 const postProduct = async (id) => {
+	//TODO: ID dinamico del carrito
 	const cart = await fetch('http://localhost:8080/api/carrito/1/productos', {
 		method: 'POST',
-		body: JSON.stringify({ id: id }),
+		headers: {
+			'accept': 'application/json',
+			'Content-type': 'application/json'
+		},
+		body: JSON.stringify({ id: parseInt(id) }),
 	});
-	console.log(cart.body);
+	return await cart.json()
 };
+
+const deleteProduct = async (id) => {
+	const cart = await fetch(`http://localhost:8080/api/carrito/1/productos/${id}`, {
+		method: 'DELETE',
+		headers: {
+			'accept': 'application/json',
+			'Content-type': 'application/json'
+		}
+	});
+	return await cart.json()
+}
