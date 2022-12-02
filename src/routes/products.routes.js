@@ -1,3 +1,5 @@
+//@ts-check
+
 // ----------- IMPORTS ----------
 import express from 'express';
 import Contenedor from '../utils/Contenedor.js';

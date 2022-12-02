@@ -1,0 +1,15 @@
+doctype html
+html(lang="es")
+	head
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(rel="stylesheet", href="/styles/style.css")
+		script(src="//cdn.jsdelivr.net/npm/sweetalert2@11") 
+		script(src="/script/index.js" type='module' defer) 
+		title Proyecto Final - Admin
+	body 
+		include partials/Navbar.pug
+		include partials/adminPostForm.pug
+		include partials/adminDeleteForm.pug
+		include partials/adminUpdateForm.pug

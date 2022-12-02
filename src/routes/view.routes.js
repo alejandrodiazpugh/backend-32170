@@ -1,6 +1,6 @@
-import express from "express";
-import Contenedor from "../utils/Contenedor.js";
-import {adminVerification} from '../utils/Verification.js'
+import express from 'express';
+import Contenedor from '../utils/Contenedor.js';
+import { adminVerification } from '../utils/Verification.js';
 
 //ADMIN AUTH
 const isAdmin = adminVerification.isAdmin;
@@ -13,23 +13,23 @@ const adminAuth = (req, res, next) => {
 		: next();
 };
 
-const products = new Contenedor("./src/data/products.json");
-const cart = new Contenedor('./src/data/cart.json')
+const products = new Contenedor('./src/data/products.json');
+const cart = new Contenedor('./src/data/cart.json');
 const productsToDisplay = await products.getAll();
 const cartToDisplay = await cart.getById(1);
 
 const viewsRouter = express.Router();
 
-viewsRouter.get("/", async (req, res) => {
-  res.render("index", { products: productsToDisplay });
+viewsRouter.get('/', async (req, res) => {
+	res.render('index', { products: productsToDisplay });
 });
 
-viewsRouter.get("/carrito", async (req, res) => {
-res.render("cart", { cart: cartToDisplay.productos });
+viewsRouter.get('/carrito', async (req, res) => {
+	res.render('cart', { cart: cartToDisplay.productos });
 });
 
-viewsRouter.get('/admin', adminAuth(), async (req, res) => {
-  res.render('admin', {products: productsToDisplay})
-})
+viewsRouter.get('/admin', adminAuth, async (req, res) => {
+	res.render('admin', { products: productsToDisplay });
+});
 
 export default viewsRouter;

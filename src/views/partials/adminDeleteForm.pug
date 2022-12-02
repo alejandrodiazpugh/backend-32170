@@ -1,0 +1,8 @@
+article(class='container')
+    h2='Eliminar productos'
+    form(action="" method='' id='admin-delete-product-form')
+        select(name="select-to-delete" id='select-to-delete')
+            option(value="Eliminar Producto" selected disabled)='Eliminar Producto'
+            each product in products 
+                option(value=product.id)=product.titulo
+        button(type='submit' id='delete-product-btn')='Borrar'

@@ -1,0 +1,14 @@
+article(class='container')
+    h2='Agregar productos'
+    form(action="/api/productos" method='POST' id='admin-add-product-form')
+        label(for="titulo")='Titulo:' 
+            input(type='text' id='titulo' name='titulo' required)
+        label(for="descripcion")='Descripcion:'
+            input(type='text' name="descripcion" id='descripcion' required) 
+        label(for="url")='URL a imagen:'
+            input(type="text" name='url' id='url' required)
+        label(for="precio")='Precio:'
+            input(type="number" name='precio' id='precio' required)
+        label(for="stock")='Stock:'
+            input(type="number" name='stock' id='stock' required)
+        button(type='button' id='add-to-stock-btn')='Agregar a productos'

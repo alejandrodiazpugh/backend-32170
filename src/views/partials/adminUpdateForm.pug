@@ -1,0 +1,19 @@
+h2(class='title w-screen m-auto center')='Actualizar productos'
+section(class='grid grid-cols-auto m-8')
+    each product in products
+        form(action="/api/productos" method='PUT' class='update-card p-8 filter' id=`update-form-${product.id}`)
+            img(src=product.url, alt="", srcset="" class='card--img')
+            label(for="update-url" class='center m-auto w-full')='Nueva liga a imagen:'
+            input(type="text" name='url' value=product.url) 
+            input(type='text' class='card--title' name='titulo' value=product.titulo)
+            textarea(name="descripcion", cols="30", rows="10")=product.descripcion
+            div(class='spacing')
+            div(class='flex-container')
+                label(for="precio")='Precio:'
+                input(type='number' name='precio' class='card--price' value=product.precio )
+            div(class='flex-container')
+                label(for="stock")='Stock:'
+                input(type='number' name='stock' class='card--price' value=product.stock )
+            button(type='button' class='update-btn' id=product.id + '-update-btn')='Actualizar'
+
+
