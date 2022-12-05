@@ -1,5 +1,6 @@
 import express from 'express';
-import Contenedor from '../utils/Contenedor.js';
+import { mysqlConnection } from '../../config/mysqlConnection.js';
+import ContenedorSQL from '../utils/ContenedorSQL.js';
 import { adminVerification } from '../utils/Verification.js';
 
 //ADMIN AUTH
@@ -13,8 +14,8 @@ const adminAuth = (req, res, next) => {
 		: next();
 };
 
-const products = new Contenedor('./src/data/products.json');
-const cart = new Contenedor('./src/data/cart.json');
+const products = new ContenedorSQL(mysqlConnection, 'productos');
+const cart = new ContenedorSQL(mysqlConnection, 'productos');
 const productsToDisplay = await products.getAll();
 const cartToDisplay = await cart.getById(1);
 
