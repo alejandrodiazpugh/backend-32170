@@ -26,7 +26,8 @@ const createMessageTable = async () => {
 		await database.schema.dropTableIfExists('mensajes');
 		await database.schema.createTable('mensajes', (table) => {
 			table.increments('id').primary();
-			table.string('email', 50).notNullable();
+			table.string('author', 50).notNullable();
+			table.string('dateTime', 50).notNullable();
 			table.string('text', 255).notNullable();
 			table.timestamps();
 		});

@@ -1,0 +1,17 @@
+article(id='chat' class='container')
+	h1(class='title')='Contacto:'
+	div(class='line')
+	form(class='chatForm')
+		div(class='form-section')
+			div(class='form-group')
+				label(for='email')='Correo:'
+				input(type='email' id='inputEmail' required)
+			div(class='form-group')
+				label(for='mensaje')='Mensaje:'
+				textarea(
+					name='mensaje'
+					id='contenidoMensaje'
+					rows='1')
+			button(id='add-message-to-chat-btn' type='button')='Enviar Mensaje'
+		div(id='chatMessages')
+			//-Aqui van los mensajes 

@@ -1,0 +1,17 @@
+article(class='container' id='table')
+    h1(class='title')="Productos"
+    div(class='line')
+    section(class='product-table')
+        if products.length == 0 
+            h3='Parece que no has agregado nada'
+            
+        else
+            div(class='product-table-row')
+                div(class='filler')
+                h2='Producto'
+                h2='Precio'
+                h2='Stock'
+                div(class='filler')
+            each product in products
+                div(id='product-table')
+                //- Aqui van los productos
