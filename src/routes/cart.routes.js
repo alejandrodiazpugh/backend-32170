@@ -1,19 +1,22 @@
 // ----------- IMPORTS ----------
 import express from 'express';
+import CarritoDaoMongo from '../DAO/carritos/CarritoDaoMongo.js';
+import ProductosDaoMongo from '../DAO/productos/ProductosDaoMongo.js';
 import Contenedor from '../utils/Contenedor.js';
 
 // ---------- ROUTER ----------
 const routerCart = express.Router();
-const cartApi = new Contenedor('./src/data/cart.json');
-const productApi = new Contenedor('./src/data/products.json');
+const cartApi = new CarritoDaoMongo();
+const productApi = new ProductosDaoMongo();
+// const cartApi = new Contenedor('./src/data/cart.json');
+// const productApi = new Contenedor('./src/data/products.json');
 
 // ----- CREATE CART -----
 routerCart.post('/', async (req, res) => {
-	const cart = await cartApi.save(req.body);
+	await cartApi.save(req.body);
 	return res.status(201).send({
 		code: 201,
-		msg: `Carrito con id ${await cart[cart.length - 1]
-			.id} creado con éxito`,
+		msg: `Carrito creado con éxito`,
 	});
 });
 
@@ -37,7 +40,7 @@ routerCart.delete('/:id', async (req, res) => {
 routerCart.get('/:id/productos', async (req, res) => {
 	const id = parseInt(req.params.id);
 	const cart = await cartApi.getById(id);
-	return res.status(201).send(cart.productos);
+	return res.status(200).json(await cart);
 });
 
 // ----- POST PRODUCTS TO CART -----
@@ -45,7 +48,7 @@ routerCart.post('/:id/productos', async (req, res) => {
 	const id = parseInt(req.params.id);
 	const idToAdd = parseInt(req.body.id);
 	const productToAdd = await productApi.getById(idToAdd);
-	await cartApi.addToList(id, productToAdd);
+	await cartApi.addToCart(idToAdd, productToAdd, id);
 	return res
 		.status(201)
 		.send({ code: 201, msg: `Se ha actualizado el carrito con id ${id}` });
@@ -55,10 +58,7 @@ routerCart.post('/:id/productos', async (req, res) => {
 routerCart.delete('/:id/productos/:id_prod', async (req, res) => {
 	const cartId = parseInt(req.params.id);
 	const productId = parseInt(req.params.id_prod);
-	const cart = await cartApi.getById(cartId);
-	const itemToDelete = cart.productos.find((item) => item.id === productId);
-	cart.productos.splice(cart.productos.indexOf(itemToDelete), 1);
-	await cartApi.update(cartId, cart);
+	await cartApi.removeFromCart(productId, cartId);
 	return res.status(200).send({
 		code: 200,
 		msg: `Se ha actualizado el carrito con id ${cartId}, eliminando el elemento con id ${productId}`,
