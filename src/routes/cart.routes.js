@@ -48,7 +48,7 @@ routerCart.post('/:id/productos', async (req, res) => {
 	const id = parseInt(req.params.id);
 	const idToAdd = parseInt(req.body.id);
 	const productToAdd = await productApi.getById(idToAdd);
-	await cartApi.addToCart(idToAdd, productToAdd, id);
+	await cartApi.addToCart(productToAdd, id);
 	return res
 		.status(201)
 		.send({ code: 201, msg: `Se ha actualizado el carrito con id ${id}` });

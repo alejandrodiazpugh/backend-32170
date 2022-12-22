@@ -1,10 +1,13 @@
+//@ts-check
 import ContenedorMongo from '../../containers/ContenedorMongo.js';
 import { productSchema } from '../productos/ProductosDaoMongo.js';
 import mongoose from 'mongoose';
 
-const MONGO_LOGIN =
-	process.env.MONGO_CREDENTIALS ||
-	'mongodb+srv://alejandroDiazPugh:coderhouse32170@cluster0.bdfsg9u.mongodb.net/?retryWrites=true&w=majority';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+const MONGO_LOGIN = process.env.MONGO_CREDENTIALS;
 
 const cartSchema = new mongoose.Schema(
 	{
@@ -20,15 +23,13 @@ class CarritoDaoMongo extends ContenedorMongo {
 	constructor() {
 		super(MONGO_LOGIN, mongoCartModel);
 	}
-	async addToCart(query, data, cartId) {
+	async addToCart(data, cartId) {
 		try {
 			this.connect();
-			const id = parseInt(query);
 			const cart = await this.getById(cartId);
-			const products = cart.products;
-			const newProducts = [...products, data];
-			cart.products = newProducts;
-			return await this.update(id, cart);
+			cart.products.push(data);
+			console.log(cart);
+			await cart.save();
 		} catch (err) {
 			console.error(`Error al agregar a carrito: ${err}`);
 		}
@@ -42,13 +43,8 @@ class CarritoDaoMongo extends ContenedorMongo {
 				(product) => product.id === query
 			);
 			const indexToRemove = cart.products.indexOf(productToRemove);
-			if (indexToRemove === -1) {
-				throw new Error('El producto no está presente en el carrito');
-			}
 			cart.products.splice(indexToRemove, 1);
-			const newCart = [...cart.products];
-			console.log({ newCart: newCart });
-			return await this.update(cartId, newCart);
+			await cart.save();
 		} catch (err) {
 			console.error(`Error al borrar elemento del carrito: ${err}`);
 		}

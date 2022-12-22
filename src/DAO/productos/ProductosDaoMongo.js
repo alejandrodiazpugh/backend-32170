@@ -1,9 +1,10 @@
 import ContenedorMongo from '../../containers/ContenedorMongo.js';
 import mongoose from 'mongoose';
+import * as dotenv from 'dotenv';
 
-const MONGO_LOGIN =
-	process.env.MONGO_CREDENTIALS ||
-	'mongodb+srv://alejandroDiazPugh:coderhouse32170@cluster0.bdfsg9u.mongodb.net/?retryWrites=true&w=majority';
+dotenv.config();
+
+const MONGO_LOGIN = process.env.MONGO_CREDENTIALS;
 
 export const productSchema = new mongoose.Schema(
 	{
