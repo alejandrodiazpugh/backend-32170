@@ -3,11 +3,17 @@ import express from 'express';
 import CarritoDaoMongo from '../DAO/carritos/CarritoDaoMongo.js';
 import ProductosDaoMongo from '../DAO/productos/ProductosDaoMongo.js';
 import Contenedor from '../utils/Contenedor.js';
+import CarritoDaoFirebase from '../DAO/carritos/CarritoDaoFirebase.js';
+import ProductosDaoFirebase from '../DAO/productos/ProductosDaoFirebase.js';
 
 // ---------- ROUTER ----------
 const routerCart = express.Router();
-const cartApi = new CarritoDaoMongo();
-const productApi = new ProductosDaoMongo();
+
+// ---------- DB ACCESS --------
+const cartApi = new CarritoDaoFirebase();
+const productApi = new ProductosDaoFirebase()
+// const cartApi = new CarritoDaoMongo();
+// const productApi = new ProductosDaoMongo();
 // const cartApi = new Contenedor('./src/data/cart.json');
 // const productApi = new Contenedor('./src/data/products.json');
 

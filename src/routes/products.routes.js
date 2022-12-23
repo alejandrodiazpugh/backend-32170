@@ -4,6 +4,7 @@
 import express from 'express';
 import Contenedor from '../utils/Contenedor.js';
 import ProductosDaoMongo from '../DAO/productos/ProductosDaoMongo.js';
+import ProductosDaoFirebase from '../DAO/productos/ProductosDaoFirebase.js';
 import { adminVerification } from '../utils/Verification.js';
 
 // ---------- ADMIN AUTH ----------
@@ -20,7 +21,8 @@ const adminAuth = (req, res, next) => {
 // ---------- ROUTER ----------
 const routerProducts = express.Router();
 // const productsApi = new Contenedor('./src/data/products.json');
-const productsApi = new ProductosDaoMongo();
+// const productsApi = new ProductosDaoMongo();
+const productsApi = new ProductosDaoFirebase();
 
 //---------- GET PRODUCTS ------------
 routerProducts.get('/', async (req, res) => {
@@ -32,7 +34,7 @@ routerProducts.get('/:id', async (req, res) => {
 	res.status(200).send(await productsApi.getById(id));
 });
 
-// //---------- POST PRODUCT ------------
+//---------- POST PRODUCT ------------
 
 routerProducts.post('/', adminAuth, (req, res) => {
 	productsApi.save(req.body);
@@ -57,12 +59,6 @@ routerProducts.put('/:id', adminAuth, async (req, res) => {
 routerProducts.delete('/:id', adminAuth, async (req, res) => {
 	const id = parseInt(req.params.id);
 	const deleted = await productsApi.deleteById(id);
-	if (deleted?.error) {
-		return res.status(400).send({
-			code: 400,
-			msg: `Mala petición. No existe producto con id ${id}`,
-		});
-	}
 	res.status(200).send({
 		code: 200,
 		msg: `Se ha eliminado con éxito el producto con id ${id}.`,

@@ -1,23 +1,9 @@
 //@ts-check
 import ContenedorMongo from '../../containers/ContenedorMongo.js';
-import { productSchema } from '../productos/ProductosDaoMongo.js';
-import mongoose from 'mongoose';
+import { mongoCartModel } from '../../config/dbconfig.js';
+import { MONGO_LOGIN } from '../../config/dbconfig.js';
 
-import * as dotenv from 'dotenv';
 
-dotenv.config();
-
-const MONGO_LOGIN = process.env.MONGO_CREDENTIALS;
-
-const cartSchema = new mongoose.Schema(
-	{
-		id: { type: Number, required: true },
-		products: [productSchema],
-	},
-	{ timestamps: true }
-);
-
-const mongoCartModel = mongoose.model('carrito', cartSchema);
 
 class CarritoDaoMongo extends ContenedorMongo {
 	constructor() {
@@ -28,7 +14,6 @@ class CarritoDaoMongo extends ContenedorMongo {
 			this.connect();
 			const cart = await this.getById(cartId);
 			cart.products.push(data);
-			console.log(cart);
 			await cart.save();
 		} catch (err) {
 			console.error(`Error al agregar a carrito: ${err}`);

@@ -2,3 +2,4 @@ node_modules
 practicas
 database
 .env
+.firebase
