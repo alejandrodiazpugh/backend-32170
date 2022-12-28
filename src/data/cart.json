@@ -1,19 +1,17 @@
 [
 	{
-		"productos": [
+		"products": [
 			{
 				"url": "https://m.media-amazon.com/images/I/41Fl3HLmZvL._SY344_BO1,204,203,200_QL70_ML2_.jpg",
 				"titulo": "Tokio Blues",
 				"descripcion": "Una historia de amor triangular que se convierte en el relato de una educación sentimental pero también de las pérdidas que implica toda maduración. Toru Watanabe, un ejecutivo de 37 años, escucha casualmente mientras aterriza en un aeropuerto europeo una vieja canción de los Beatles, y la música le hace retroceder a su juventud, al turbulento Tokio de finales de los sesenta.",
 				"precio": "399",
 				"stock": "20",
-				"codigo": " WOQTG-3-3238",
 				"timestamp": "2/12/2022 00:03:02",
 				"id": 3
 			}
 		],
 		"timestamp": "2/12/2022 00:03:34",
-		"id": 1,
-		"codigo": " AGUBX-1-9785"
+		"id": 1
 	}
 ]

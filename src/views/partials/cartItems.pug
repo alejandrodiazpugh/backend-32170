@@ -2,7 +2,7 @@ article(class='container' id='table')
     h1(class='title')="Carrito"
     div(class='line')
     section(class='cart-table')
-        if cart.length == 0 
+        if cart && cart.length === 0 
             h3='Parece que no has agregado nada'
             a(href="/" class='m-auto') 
                 button='Comprar libros'

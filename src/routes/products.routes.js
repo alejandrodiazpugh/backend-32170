@@ -2,9 +2,7 @@
 
 // ----------- IMPORTS ----------
 import express from 'express';
-import Contenedor from '../utils/Contenedor.js';
-import ProductosDaoMongo from '../DAO/productos/ProductosDaoMongo.js';
-import ProductosDaoFirebase from '../DAO/productos/ProductosDaoFirebase.js';
+import { DAO } from '../DAO/index.js';
 import { adminVerification } from '../utils/Verification.js';
 
 // ---------- ADMIN AUTH ----------
@@ -20,9 +18,8 @@ const adminAuth = (req, res, next) => {
 
 // ---------- ROUTER ----------
 const routerProducts = express.Router();
-// const productsApi = new Contenedor('./src/data/products.json');
-// const productsApi = new ProductosDaoMongo();
-const productsApi = new ProductosDaoFirebase();
+const productDao = DAO.productos;
+const productsApi = new productDao;
 
 //---------- GET PRODUCTS ------------
 routerProducts.get('/', async (req, res) => {

@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { generateString } from './StringGenerator.js';
+import { generateString } from '../utils/StringGenerator.js';
 
-export default class Contenedor {
+class ContenedorFS {
 	constructor(path) {
 		this.path = path;
 	}
@@ -30,7 +30,7 @@ export default class Contenedor {
 	async getById(queryId) {
 		try {
 			const items = await this.getAll();
-			const itemToGet = await items.find((item) => item.id === queryId);
+			const itemToGet = await items.find((item) => item.id === parseInt(queryId));
 			if (itemToGet === undefined) {
 				return { error: 'elemento no encontrado' };
 			}
@@ -95,25 +95,8 @@ export default class Contenedor {
 		}
 	}
 
-	async addToList(idOfContainer, product) {
-		try {
-			const items = await this.getAll();
-			const containerToFind = items.find(
-				(container) => container.id === idOfContainer
-			);
-			if (containerToFind === undefined) {
-				// Si no existe el carrito lo crea
-				await this.save({ productos: [] });
-				const id = idOfContainer;
-				const itemToSend = product;
-				return await this.addToList(id, itemToSend); // recursion
-			}
-			containerToFind.productos.push(product);
-			items.splice(items.indexOf(containerToFind), 1, containerToFind);
-			fs.promises.writeFile(this.path, JSON.stringify(items));
-			return containerToFind;
-		} catch (error) {
-			console.log('Error al agregar elemento: ' + error);
-		}
-	}
+	
 }
+
+
+export default ContenedorFS
