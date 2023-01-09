@@ -338,3 +338,8 @@ button:active {
 .date-time {
 	color: green;
 }
+
+.fake-table-row {
+	display: flex;
+	flex-direction: column;
+}

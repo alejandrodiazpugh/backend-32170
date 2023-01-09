@@ -11,6 +11,7 @@ import viewsRouter from './src/routes/view.routes.js';
 import ContenedorSQL from './src/utils/ContenedorSQL.js';
 import { mysqlConnection } from './config/mysqlConnection.js';
 import { sqliteConnection } from './config/sqliteConnection.js';
+import routerProductsTest from './src/routes/products-test.routes.js';
 
 // --------------------------- INSTANCIA Y VARIABLES ---------------------------
 
@@ -37,6 +38,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'src/views'));
 
 app.use('/', viewsRouter);
+app.use('/api/productos-test', routerProductsTest);
 
 app.get('*', (req, res) => {
 	res.status(404).send('Error 404: La página solicitada no existe.');

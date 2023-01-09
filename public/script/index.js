@@ -158,3 +158,38 @@ const swalfailedProduct = {
 	color: '#0c3756',
 	iconColor: '#1f5372',
 };
+
+// FAKER PRODUCTS API
+
+const getFakeProducts = async (url) => {
+	try {
+		const products = await fetch(url);
+		const data = await products.json();
+		return data;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const generateTable = async (url) => {
+	try {
+		const data = await getFakeProducts(url);
+		const table = document.getElementById('fake-products');
+		await data?.forEach((product) => {
+			let row = document.createElement('div');
+			row.classList.add('product-table-row');
+			row.innerHTML = `
+			<div class='filler'></div>
+			<div>${product.productName}</div> 
+			<div>$ ${product.price}</div>
+			<img src=${product.img} alt="" class='product-table-img' />
+			`;
+			table.append(row);
+		});
+	} catch (err) {
+		console.error(err);
+	}
+};
+const TEST_URL = 'http://localhost:8080/api/productos-test';
+
+generateTable(TEST_URL);
