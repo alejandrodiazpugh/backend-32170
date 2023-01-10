@@ -1,5 +1,5 @@
 import express from 'express';
-import { mysqlConnection } from '../../config/mysqlConnection.js';
+import { mysqlConnection } from '../config/mysqlConnection.js';
 import ContenedorSQL from '../utils/ContenedorSQL.js';
 import { adminVerification } from '../utils/Verification.js';
 

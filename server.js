@@ -9,8 +9,8 @@ import { Server as SocketServer } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import viewsRouter from './src/routes/view.routes.js';
 import ContenedorSQL from './src/utils/ContenedorSQL.js';
-import { mysqlConnection } from './config/mysqlConnection.js';
-import { sqliteConnection } from './config/sqliteConnection.js';
+import { mysqlConnection } from './src/config/mysqlConnection.js';
+import MensajesDaoMongo from './src/DAO/MensajesDaoMongo.js';
 import routerProductsTest from './src/routes/products-test.routes.js';
 
 // --------------------------- INSTANCIA Y VARIABLES ---------------------------
@@ -29,7 +29,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // --------------------------- BASE DE DATOS ----------------------
-const messageContainer = new ContenedorSQL(sqliteConnection, 'mensajes');
+const messageContainer = new MensajesDaoMongo();
 const productContainer = new ContenedorSQL(mysqlConnection, 'productos');
 
 // --------------------------- RUTAS ---------------------------
