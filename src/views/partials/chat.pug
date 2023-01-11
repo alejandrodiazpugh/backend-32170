@@ -4,8 +4,18 @@ article(id='chat' class='container')
 	form(class='chatForm')
 		div(class='form-section')
 			div(class='form-group')
+				label(for='firstName')='Nombre:'
+				input(type='text' name='firstName' id='firstName' required)
+				label(for='lastName')='Apellido:'
+				input(type='text' name='lastName' id='lastName' required)
+				label(for='username')='Alias:'
+				input(type='text' name='username' id='username' required)
 				label(for='email')='Correo:'
 				input(type='email' id='inputEmail' required)
+				label(for='age')='Edad:'
+				input(type='text' name='age' id='age' required)
+				label(for='avatar')='Imagen de perfil:'
+				input(type='text' name='avatar' id='avatar' required)
 			div(class='form-group')
 				label(for='mensaje')='Mensaje:'
 				textarea(
@@ -13,5 +23,7 @@ article(id='chat' class='container')
 					id='contenidoMensaje'
 					rows='1')
 			button(id='add-message-to-chat-btn' type='button')='Enviar Mensaje'
+		div(id='compression')
+			//-Aqui va la compresion total
 		div(id='chatMessages')
 			//-Aqui van los mensajes 

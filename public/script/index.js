@@ -1,19 +1,11 @@
 //Websocket
 const socket = io();
 
-socket.on('from-server-messages', async (data) => {
-	await renderChat(data);
-});
-
-socket.on('from-server-products', (data) => {
-	renderProducts(data);
-});
-
 const renderChat = async (mensajes) => {
 	const cuerpoMensajesHTML = await mensajes
 		?.map((mensaje) => {
 			return `<span>
-				<b class="chatAuthor">${mensaje.author}</b> <small class='date-time'>(${mensaje.dateTime})</small>: <span class="chatText"><i>${mensaje.text}</i></span></span>`;
+		<b class="chatAuthor">${mensaje.author.alias}</b> <small class='date-time'>(${mensaje.date})</small>: <span class="chatText"><i>${mensaje.text}</i></span></span>`;
 		})
 		.join('<br>');
 
@@ -26,12 +18,12 @@ const renderProducts = async (products) => {
 		?.map((product) => {
 			return `
 			<div class='product-table-row'>
-				<img src=${product.url} alt="" class='product-table-img' />
-				<div>${product.titulo}</div> 
-				<div>$ ${product.precio}</div>
-				<div>${product.stock}</div>
+			<img src=${product.url} alt="" class='product-table-img' />
+			<div>${product.titulo}</div> 
+			<div>$ ${product.precio}</div>
+			<div>${product.stock}</div>
 			</div>
-				`;
+			`;
 		})
 		.join('<br>');
 	if (productTable) {
@@ -42,6 +34,11 @@ const renderProducts = async (products) => {
 const chatBtn = document.querySelector('#add-message-to-chat-btn');
 chatBtn?.addEventListener('click', () => {
 	const inputEmail = document.querySelector('#inputEmail').value;
+	const firstName = document.querySelector('#firstName').value;
+	const lastName = document.querySelector('#lastName').value;
+	const age = document.querySelector('#age').value;
+	const alias = document.querySelector('#username').value;
+	const avatar = document.querySelector('#avatar').value;
 	const isValid = ValidateEmail(inputEmail);
 	const inputContenido = document.querySelector('#contenidoMensaje').value;
 	if (!isValid || inputContenido === '') {
@@ -50,19 +47,34 @@ chatBtn?.addEventListener('click', () => {
 	}
 
 	let date = new Date();
-	let stringDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} ${
-		date.toTimeString().split(' ')[0]
-	}`;
+	let stringDate = `${date.getDate()}/${
+		date.getMonth() + 1
+	}/${date.getFullYear()} ${date.toTimeString().split(' ')[0]}`;
 
 	const mensaje = {
-		author: inputEmail,
-		dateTime: stringDate,
+		author: {
+			email: inputEmail,
+			nombre: firstName,
+			apellido: lastName,
+			edad: age,
+			alias: alias,
+			avatar: avatar,
+		},
+		date: stringDate,
 		text: inputContenido,
 	};
 
 	socket.emit('from-client-message', mensaje);
 });
 
+socket.on('from-server-messages', async (data) => {
+	await renderChat(data);
+	console.log(data);
+});
+
+socket.on('from-server-products', (data) => {
+	renderProducts(data);
+});
 const sendBtn = document.querySelector('#add-to-stock-btn');
 sendBtn.addEventListener('click', async () => {
 	const titulo = document.querySelector('#titulo').value;

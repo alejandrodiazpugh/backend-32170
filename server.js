@@ -12,6 +12,9 @@ import ContenedorSQL from './src/utils/ContenedorSQL.js';
 import { mysqlConnection } from './src/config/mysqlConnection.js';
 import MensajesDaoMongo from './src/DAO/MensajesDaoMongo.js';
 import routerProductsTest from './src/routes/products-test.routes.js';
+import { denormalize, normalize } from 'normalizr';
+import { normalizeMessageSchema } from './src/config/DBSchema.js';
+import print from './src/utils/Print.js';
 
 // --------------------------- INSTANCIA Y VARIABLES ---------------------------
 
@@ -31,6 +34,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 // --------------------------- BASE DE DATOS ----------------------
 const messageContainer = new MensajesDaoMongo();
 const productContainer = new ContenedorSQL(mysqlConnection, 'productos');
+
+messageContainer.deleteById('8');
 
 // --------------------------- RUTAS ---------------------------
 
@@ -59,6 +64,15 @@ io.on('connection', async (socket) => {
 	socket.emit('from-server-products', await productContainer.getAll());
 
 	socket.on('from-client-message', async (message) => {
+		const normalizedMsg = normalize(await message, normalizeMessageSchema);
+		print(normalizedMsg);
+		print(
+			denormalize(
+				normalizedMsg,
+				normalizeMessageSchema,
+				normalizedMsg.entities
+			)
+		);
 		await messageContainer.save(message);
 		io.sockets.emit(
 			'from-server-messages',
