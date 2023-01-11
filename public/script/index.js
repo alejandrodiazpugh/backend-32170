@@ -1,5 +1,39 @@
 //Websocket
 const socket = io();
+const schema = window.normalizr.schema;
+const normalize = window.normalizr.normalize;
+// NORMALIZR SCHEMA 
+const emailSchema = new schema.Entity('email');
+const nombreSchema = new schema.Entity('nombre');
+const apellidoSchema = new schema.Entity('apellido');
+const edadSchema = new schema.Entity('edad');
+const aliasSchema = new schema.Entity('alias');
+const avatarSchema = new schema.Entity('email');
+
+const authorSchema = new schema.Entity(
+	'author',
+	{
+		email: emailSchema,
+		nombre: nombreSchema,
+		apellido: apellidoSchema,
+		edad: edadSchema,
+		alias: aliasSchema,
+		avatar: avatarSchema,
+	},
+	{ idAttribute: 'email' }
+);
+
+const textSchema = new schema.Entity('text');
+
+const normalizeMessageSchema = new schema.Entity(
+	'message',
+	{
+		id: 'mensajes',
+		author: authorSchema,
+		text: [textSchema],
+	},
+);
+
 
 const renderChat = async (mensajes) => {
 	const cuerpoMensajesHTML = await mensajes
@@ -12,24 +46,24 @@ const renderChat = async (mensajes) => {
 	document.querySelector('#chatMessages').innerHTML = cuerpoMensajesHTML;
 };
 
-const renderProducts = async (products) => {
-	const productTable = document.querySelector('#product-table');
-	const filaTablaProductos = await products
-		?.map((product) => {
-			return `
-			<div class='product-table-row'>
-			<img src=${product.url} alt="" class='product-table-img' />
-			<div>${product.titulo}</div> 
-			<div>$ ${product.precio}</div>
-			<div>${product.stock}</div>
-			</div>
-			`;
-		})
-		.join('<br>');
-	if (productTable) {
-		productTable.innerHTML = filaTablaProductos;
-	}
-};
+// const renderProducts = async (products) => {
+// 	const productTable = document.querySelector('#product-table');
+// 	const filaTablaProductos = await products
+// 		?.map((product) => {
+// 			return `
+// 			<div class='product-table-row'>
+// 			<img src=${product.url} alt="" class='product-table-img' />
+// 			<div>${product.titulo}</div> 
+// 			<div>$ ${product.precio}</div>
+// 			<div>${product.stock}</div>
+// 			</div>
+// 			`;
+// 		})
+// 		.join('<br>');
+// 	if (productTable) {
+// 		productTable.innerHTML = filaTablaProductos;
+// 	}
+// };
 
 const chatBtn = document.querySelector('#add-message-to-chat-btn');
 chatBtn?.addEventListener('click', () => {
@@ -63,45 +97,45 @@ chatBtn?.addEventListener('click', () => {
 		date: stringDate,
 		text: inputContenido,
 	};
+	const normalizedMensaje = normalize(mensaje, normalizeMessageSchema)
 
-	socket.emit('from-client-message', mensaje);
+	socket.emit('from-client-message', normalizedMensaje);
 });
 
 socket.on('from-server-messages', async (data) => {
 	await renderChat(data);
-	console.log(data);
 });
 
-socket.on('from-server-products', (data) => {
-	renderProducts(data);
-});
-const sendBtn = document.querySelector('#add-to-stock-btn');
-sendBtn.addEventListener('click', async () => {
-	const titulo = document.querySelector('#titulo').value;
-	const descripcion = document.querySelector('#descripcion').value;
-	const precio = document.querySelector('#precio').value;
-	const url = document.querySelector('#url').value;
-	const stock = document.querySelector('#stock').value;
+// socket.on('from-server-products', (data) => {
+// 	renderProducts(data);
+// });
+// const sendBtn = document.querySelector('#add-to-stock-btn');
+// sendBtn.addEventListener('click', async () => {
+// 	const titulo = document.querySelector('#titulo').value;
+// 	const descripcion = document.querySelector('#descripcion').value;
+// 	const precio = document.querySelector('#precio').value;
+// 	const url = document.querySelector('#url').value;
+// 	const stock = document.querySelector('#stock').value;
 
-	const product = {
-		titulo,
-		descripcion,
-		precio,
-		stock,
-		url,
-	};
+// 	const product = {
+// 		titulo,
+// 		descripcion,
+// 		precio,
+// 		stock,
+// 		url,
+// 	};
 
-	const notFilled = Object.values(product).some(
-		(value) => value === '' || value === null
-	);
-	if (notFilled) {
-		Swal.fire(swalfailedProduct);
-		return;
-	}
+// 	const notFilled = Object.values(product).some(
+// 		(value) => value === '' || value === null
+// 	);
+// 	if (notFilled) {
+// 		Swal.fire(swalfailedProduct);
+// 		return;
+// 	}
 
-	Swal.fire(swalBehavior);
-	socket.emit('from-client-product', product);
-});
+// 	Swal.fire(swalBehavior);
+// 	socket.emit('from-client-product', product);
+// });
 
 function ValidateEmail(mail) {
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {

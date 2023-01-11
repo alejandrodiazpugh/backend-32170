@@ -14,15 +14,12 @@ const adminAuth = (req, res, next) => {
 		: next();
 };
 
-const products = new ContenedorSQL(mysqlConnection, 'productos');
-const cart = new ContenedorSQL(mysqlConnection, 'productos');
-const productsToDisplay = await products.getAll();
-const cartToDisplay = await cart.getById(1);
+
 
 const viewsRouter = express.Router();
 
 viewsRouter.get('/', async (req, res) => {
-	res.render('index', { products: productsToDisplay });
+	res.render('index');
 });
 
 viewsRouter.get('/carrito', async (req, res) => {
@@ -30,7 +27,7 @@ viewsRouter.get('/carrito', async (req, res) => {
 });
 
 viewsRouter.get('/admin', adminAuth, async (req, res) => {
-	res.render('admin', { products: productsToDisplay });
+	res.render('admin');
 });
 
 export default viewsRouter;

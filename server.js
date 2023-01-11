@@ -8,11 +8,9 @@ import { fileURLToPath } from 'url';
 import { Server as SocketServer } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import viewsRouter from './src/routes/view.routes.js';
-import ContenedorSQL from './src/utils/ContenedorSQL.js';
-import { mysqlConnection } from './src/config/mysqlConnection.js';
 import MensajesDaoMongo from './src/DAO/MensajesDaoMongo.js';
 import routerProductsTest from './src/routes/products-test.routes.js';
-import { denormalize, normalize } from 'normalizr';
+import { denormalize } from 'normalizr';
 import { normalizeMessageSchema } from './src/config/DBSchema.js';
 import print from './src/utils/Print.js';
 
@@ -33,7 +31,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 // --------------------------- BASE DE DATOS ----------------------
 const messageContainer = new MensajesDaoMongo();
-const productContainer = new ContenedorSQL(mysqlConnection, 'productos');
+// const productContainer = new ContenedorSQL(mysqlConnection, 'productos');
 
 messageContainer.deleteById('8');
 
@@ -61,30 +59,24 @@ server.on('error', (error) => {
 // --------------------------- WEBSOCKET ---------------------------
 io.on('connection', async (socket) => {
 	socket.emit('from-server-messages', await messageContainer.getAll());
-	socket.emit('from-server-products', await productContainer.getAll());
+	// socket.emit('from-server-products', await productContainer.getAll());
 
 	socket.on('from-client-message', async (message) => {
-		const normalizedMsg = normalize(await message, normalizeMessageSchema);
-		print(normalizedMsg);
-		print(
-			denormalize(
-				normalizedMsg,
-				normalizeMessageSchema,
-				normalizedMsg.entities
-			)
-		);
-		await messageContainer.save(message);
+		const denormalizedMsg = denormalize(message, normalizeMessageSchema, message.entities)
+		print(denormalizedMsg);
+		console.log(await denormalizedMsg);
+		await messageContainer.save(denormalizedMsg);
 		io.sockets.emit(
 			'from-server-messages',
 			await messageContainer.getAll()
 		);
 	});
 
-	socket.on('from-client-product', async (product) => {
-		productContainer.save(product);
-		io.sockets.emit(
-			'from-server-products',
-			await productContainer.getAll()
-		);
-	});
+	// socket.on('from-client-product', async (product) => {
+	// 	productContainer.save(product);
+	// 	io.sockets.emit(
+	// 		'from-server-products',
+	// 		await productContainer.getAll()
+	// 	);
+	// });
 });

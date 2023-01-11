@@ -44,11 +44,10 @@ const textSchema = new schema.Entity('text');
 export const normalizeMessageSchema = new schema.Entity(
 	'message',
 	{
-		email: emailSchema,
+		id: 'mensajes',
 		author: authorSchema,
 		text: [textSchema],
 	},
-	{ idAttribute: 'email' }
 );
 
 export const mongoModel = mongoose.model('mensajes', mongoMessageSchema);
